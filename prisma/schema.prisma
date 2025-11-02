@@ -1,0 +1,33 @@
+// Prisma Schema 定义
+// 这是一个浏览器端的 Prisma 风格 API，实际使用 LokiJS 作为底层存储
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/db/prisma-client"
+}
+
+// 注意：Prisma 需要在 Node.js 环境中运行
+// 这个 schema 主要用于类型定义和文档
+// 实际数据存储使用 LokiJS
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  age       Int?
+  city      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
